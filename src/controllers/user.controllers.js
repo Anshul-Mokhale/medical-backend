@@ -36,11 +36,11 @@ const registerUser = asyncHandler(async (req, res) => {
     // return res
 
 
-    const { fullName, email, phone, password } = req.body
+    const { name, email, phone, password } = req.body
     //console.log("email: ", email);
 
     if (
-        [fullName, email, phone, password].some((field) => field?.trim() === "")
+        [name, email, phone, password].some((field) => field?.trim() === "")
     ) {
         throw new ApiError(400, "All fields are required")
     }
@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
     const user = await User.create({
-        fullName,
+        name,
         email,
         avatar: "",
         password,
@@ -90,7 +90,7 @@ const loginUser = asyncHandler(async (req, res) => {
     console.log(email);
 
     if (!email) {
-        throw new ApiError(400, "phone or email is required")
+        throw new ApiError(400, "email is required")
     }
 
     // Here is an alternative of above code based on logic discussed in video:
@@ -243,9 +243,9 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 })
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
-    const { fullName, email } = req.body
+    const { name, email } = req.body
 
-    if (!fullName || !email) {
+    if (!name || !email) {
         throw new ApiError(400, "All fields are required")
     }
 
@@ -253,7 +253,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
         req.user?._id,
         {
             $set: {
-                fullName,
+                name,
                 email: email
             }
         },
